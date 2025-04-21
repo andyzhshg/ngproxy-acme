@@ -1,0 +1,47 @@
+{
+  "sites": [
+    {
+      "domain": "example.com",
+      "ssl": true,
+      "locations": [
+        {
+          "path": "/",
+          "proxy_pass": "http://backend1:8080",
+          "websocket": false
+        },
+        {
+          "path": "/api/",
+          "proxy_pass": "http://api-server:3000",
+          "websocket": false
+        },
+        {
+          "path": "/ws/",
+          "proxy_pass": "http://websocket-server:8888",
+          "websocket": true
+        }
+      ]
+    },
+    {
+      "domain": "another-domain.com",
+      "ssl": true,
+      "locations": [
+        {
+          "path": "/",
+          "proxy_pass": "http://backend2:8080",
+          "websocket": false
+        }
+      ]
+    },
+    {
+      "domain": "http-only.com",
+      "ssl": false,
+      "locations": [
+        {
+          "path": "/",
+          "proxy_pass": "http://legacy-server:8080",
+          "websocket": false
+        }
+      ]
+    }
+  ]
+}

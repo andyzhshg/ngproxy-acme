@@ -1,0 +1,32 @@
+server {
+    listen 80;
+    server_name {{domain}};
+    
+    # HTTP跳转HTTPS
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name {{domain}};
+    
+    # SSL证书设置
+    ssl_certificate {{ssl_certificate}};
+    ssl_certificate_key {{ssl_certificate_key}};
+    
+    # OCSP Stapling
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    resolver 8.8.8.8 8.8.4.4 valid=300s;
+    resolver_timeout 5s;
+    
+    # 安全头部
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Content-Type-Options nosniff;
+    add_header X-Frame-Options SAMEORIGIN;
+    add_header X-XSS-Protection "1; mode=block";
+    
+    # 动态生成的locations将被添加在这里
+} 

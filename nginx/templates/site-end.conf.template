@@ -1,0 +1,15 @@
+    # 通用错误页
+    error_page 404 /404.html;
+    error_page 500 502 503 504 /50x.html;
+    
+    # 默认错误页面位置
+    location = /404.html {
+        root /var/www/html;
+        internal;
+    }
+    
+    location = /50x.html {
+        root /var/www/html;
+        internal;
+    }
+} 

@@ -1,0 +1,15 @@
+{
+    "sites": [
+        {
+            "domain": "ggllhhtt.shuimuluoyan.com",
+            "ssl": true,
+            "locations": [
+                {
+                    "path": "/",
+                    "proxy_pass": "http://vsadmin:80/",
+                    "websocket": false
+                }
+            ]
+        }
+    ]
+}

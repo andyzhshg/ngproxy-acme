@@ -127,6 +127,7 @@ for ((i=0; i<$site_count; i++)); do
         
         location_config="    location $path {\n"
         location_config+="        proxy_pass $proxy_pass;\n"
+        location_config+="        proxy_pass_header Content-Type;\n"
         location_config+="        proxy_set_header Host \$host;\n"
         location_config+="        proxy_set_header X-Real-IP \$remote_addr;\n"
         location_config+="        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;\n"

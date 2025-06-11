@@ -88,6 +88,33 @@ echo "安装证书到 /acme-certs 目录..."
     --cert-file      /acme-certs/$DOMAIN/cert.cer \
     --ca-file        /acme-certs/$DOMAIN/cert.ca.cer
 
+
+# 新增一个app2.DOMAIN的证书
+VIDEO_DOMAIN="app2.$DOMAIN"
+VIDEO_DOMAIN_PARAMS="-d $VIDEO_DOMAIN"
+echo "添加域名: $VIDEO_DOMAIN"
+
+# 检查证书是否已存在
+if [ -d "/root/.acme.sh/$VIDEO_DOMAIN" ] && [ -f "/root/.acme.sh/$VIDEO_DOMAIN/$VIDEO_DOMAIN.cer" ]; then
+    echo "证书已存在，检查是否需要更新..."
+    /root/.acme.sh/acme.sh --renew $VIDEO_DOMAIN_PARAMS --force --keylength "$CERT_KEYLENGTH"
+else
+    echo "证书不存在，申请新证书..."
+    # 对于泛域名，必须使用DNS验证方式
+    /root/.acme.sh/acme.sh --log --issue $VIDEO_DOMAIN_PARAMS --dns "$DNS_API" --keylength "$CERT_KEYLENGTH" --force
+fi
+
+# 创建证书目录
+mkdir -p /acme-certs/$VIDEO_DOMAIN
+
+# 安装证书到指定目录
+echo "安装证书到 /acme-certs 目录..."
+/root/.acme.sh/acme.sh --install-cert $VIDEO_DOMAIN_PARAMS \
+    --key-file       /acme-certs/$VIDEO_DOMAIN/cert.key \
+    --fullchain-file /acme-certs/$VIDEO_DOMAIN/cert.fullchain.cer \
+    --cert-file      /acme-certs/$VIDEO_DOMAIN/cert.cer \
+    --ca-file        /acme-certs/$VIDEO_DOMAIN/cert.ca.cer
+
 # 执行颁发后钩子脚本(如果有)
 if [ -n "$ISSUE_HOOK" ]; then
     echo "执行颁发后钩子脚本..."
